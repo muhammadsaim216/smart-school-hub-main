@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smart School LMS Design System
+   Academic/Professional Theme with Red (#E31E24) and White
+   Typography: Inter (system font stack)
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@layer base {
+  :root {
+    /* Core Brand Colors */
+    --background: 0 0% 100%;
+    --foreground: 220 20% 10%;
+
+    /* Primary - Smart School Red */
+    --primary: 358 81% 51%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Light Gray */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 20% 10%;
+
+    /* Card - Elevated White */
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 10%;
+
+    /* Popover */
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 10%;
+
+    /* Muted - Subtle Gray */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 10% 45%;
+
+    /* Accent - Light Red Tint */
+    --accent: 358 81% 97%;
+    --accent-foreground: 358 81% 45%;
+
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders & Inputs */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 358 81% 51%;
+
+    --radius: 0.5rem;
+
+    /* Sidebar */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 220 10% 30%;
+    --sidebar-primary: 358 81% 51%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 358 81% 97%;
+    --sidebar-accent-foreground: 358 81% 45%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 358 81% 51%;
+
+    /* Custom Tokens */
+    --stat-bg: 220 14% 96%;
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+  }
+
+  .dark {
+    --background: 220 20% 6%;
+    --foreground: 0 0% 98%;
+
+    --primary: 358 81% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 14%;
+    --secondary-foreground: 0 0% 98%;
+
+    --card: 220 20% 8%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 220 20% 8%;
+    --popover-foreground: 0 0% 98%;
+
+    --muted: 220 14% 14%;
+    --muted-foreground: 220 10% 60%;
+
+    --accent: 358 40% 15%;
+    --accent-foreground: 358 81% 70%;
+
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 14% 18%;
+    --input: 220 14% 18%;
+    --ring: 358 81% 55%;
+
+    --sidebar-background: 220 20% 8%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 358 81% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 358 40% 15%;
+    --sidebar-accent-foreground: 358 81% 70%;
+    --sidebar-border: 220 14% 18%;
+    --sidebar-ring: 358 81% 55%;
+
+    --stat-bg: 220 14% 12%;
+    --success: 142 76% 42%;
+    --success-foreground: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .stat-card {
+    @apply bg-secondary/50 backdrop-blur-sm rounded-lg p-6 text-center transition-all duration-300 hover:shadow-md hover:bg-secondary/70;
+  }
+
+  .course-card {
+    @apply bg-card rounded-xl border border-border shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-primary/20 hover:-translate-y-1;
+  }
+
+  .nav-link {
+    @apply text-muted-foreground hover:text-foreground transition-colors duration-200 font-medium;
+  }
+
+  .nav-link-active {
+    @apply text-primary font-semibold;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold text-foreground tracking-tight;
+  }
+
+  .section-subtitle {
+    @apply text-lg text-muted-foreground max-w-2xl;
+  }
+
+  .progress-bar {
+    @apply h-2 bg-secondary rounded-full overflow-hidden;
+  }
+
+  .progress-bar-fill {
+    @apply h-full bg-primary rounded-full transition-all duration-500;
+  }
+
+  .lesson-sidebar-item {
+    @apply flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-accent;
+  }
+
+  .lesson-sidebar-item-active {
+    @apply bg-accent border-l-4 border-primary;
+  }
+}
