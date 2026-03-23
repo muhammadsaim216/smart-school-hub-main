@@ -2,7 +2,8 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
-type AppRole = "admin" | "student";
+// UPDATED: Added "super_admin" to the AppRole type alias
+export type AppRole = "admin" | "student" | "super_admin";
 
 interface AuthContextType {
   user: User | null;
@@ -39,7 +40,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       .from("user_roles")
       .select("role")
       .eq("user_id", userId)
-      .single();
+      .maybeSingle(); // Using maybeSingle to avoid errors if role doesn't exist yet
 
     if (error) {
       console.error("Error fetching role:", error);

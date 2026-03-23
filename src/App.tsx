@@ -18,6 +18,7 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import AdminCourses from "./pages/admin/AdminCourses";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import SuperAdminPanel from "./pages/SuperAdminPanel";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,20 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/auth" element={<Auth />} />
+            
+            {/* MODIFIED ADMIN ROUTE: 
+              We use SuperAdminPanel as the main entry for /admin now.
+              Added a check for "super_admin" in the ProtectedRoute.
+            */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute requiredRole="super_admin">
+                  <SuperAdminPanel />
+                </ProtectedRoute>
+              }
+            />
+
             <Route
               path="/dashboard"
               element={
@@ -49,19 +64,11 @@ const App = () => (
               }
             />
             
-            {/* Admin Routes */}
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute requiredRole="admin">
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
+            {/* Sub-Admin Routes */}
             <Route
               path="/admin/users"
               element={
-                <ProtectedRoute requiredRole="admin">
+                <ProtectedRoute requiredRole="super_admin">
                   <AdminUsers />
                 </ProtectedRoute>
               }

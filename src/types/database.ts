@@ -12,7 +12,7 @@ export interface Profile {
 export interface UserRole {
   id: string;
   user_id: string;
-  role: "admin" | "student";
+  role: "admin" | "student" | "super_admin";
 }
 
 export interface Course {
@@ -34,9 +34,13 @@ export interface Course {
   updated_at: string;
 }
 
+/**
+ * Updated UserWithRole to include "super_admin" to maintain 
+ * consistency across the UserManagement dashboard.
+ */
 export interface UserWithRole extends Profile {
   email?: string;
-  role: "admin" | "student";
+  role: "admin" | "student" | "super_admin";
 }
 
 export interface DashboardStats {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { DollarSign, Search, CreditCard, Download, AlertCircle, Loader2, TrendingUp, Wallet } from "lucide-react";
+import { Search, CreditCard, Download, AlertCircle, Loader2, TrendingUp, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -55,12 +55,12 @@ const FinanceModule = ({ onAdd }: { onAdd: () => void }) => {
           <Button variant="outline" className="flex-1 md:flex-none border-slate-200">
             <Download className="w-4 h-4 mr-2" /> Report
           </Button>
-          {/* CONNECTED TO DASHBOARD: onAdd triggers the "Collect Fee" form */}
+          {/* UPDATED: Removed DollarSign icon and replaced with Rs. text for PKR */}
           <Button 
             onClick={onAdd}
-            className="flex-1 md:flex-none bg-[#E11D48] hover:bg-[#BE123C] text-white shadow-lg transition-all active:scale-95"
+            className="flex-1 md:flex-none bg-[#E11D48] hover:bg-[#BE123C] text-white shadow-lg transition-all active:scale-95 font-bold"
           >
-            <DollarSign className="w-4 h-4 mr-2" /> Collect Fee
+            <span className="mr-2 text-xs">Rs.</span> Collect Fee
           </Button>
         </div>
       </div>
@@ -72,7 +72,7 @@ const FinanceModule = ({ onAdd }: { onAdd: () => void }) => {
             <TrendingUp className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-slate-900">${totalCollected.toLocaleString()}</div>
+            <div className="text-2xl font-bold text-slate-900">Rs. {totalCollected.toLocaleString()}</div>
             <p className="text-[10px] text-green-600 font-medium">Synced with database</p>
           </CardContent>
         </Card>
@@ -83,7 +83,7 @@ const FinanceModule = ({ onAdd }: { onAdd: () => void }) => {
             <AlertCircle className="h-4 w-4 text-[#E11D48]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-[#E11D48]">${totalPending.toLocaleString()}</div>
+            <div className="text-2xl font-bold text-[#E11D48]">Rs. {totalPending.toLocaleString()}</div>
             <p className="text-[10px] text-muted-foreground italic">Outstanding balance</p>
           </CardContent>
         </Card>
@@ -146,8 +146,8 @@ const FinanceModule = ({ onAdd }: { onAdd: () => void }) => {
                       <div className="text-[10px] font-mono text-red-500 uppercase">{fee.students?.admission_no}</div>
                     </TableCell>
                     <TableCell className="font-medium text-slate-600">{fee.fee_masters?.fee_groups?.name || 'General'}</TableCell>
-                    <TableCell className="font-semibold">${fee.fee_masters?.amount || 0}</TableCell>
-                    <TableCell className="text-green-600 font-bold">${fee.amount_paid}</TableCell>
+                    <TableCell className="font-semibold">Rs. {fee.fee_masters?.amount || 0}</TableCell>
+                    <TableCell className="text-green-600 font-bold">Rs. {fee.amount_paid}</TableCell>
                     <TableCell>
                       <Badge 
                         variant="outline"

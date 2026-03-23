@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, Menu, X, LogOut, User, Shield } from "lucide-react";
+import { GraduationCap, Menu, X, LogOut, User, Shield, ShieldCheck, LayoutDashboard } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -20,7 +20,6 @@ const Navbar = () => {
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/courses", label: "Courses" },
-    { href: "/dashboard", label: "Dashboard" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -59,6 +58,17 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
+            {/* If logged in, show a direct link to the most relevant dashboard */}
+            {user && (
+              <Link
+                to="/admin"
+                className={`text-sm font-medium transition-colors ${
+                  isActive("/admin") ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Dashboard
+              </Link>
+            )}
           </div>
 
           {/* Auth Buttons */}
@@ -68,31 +78,50 @@ const Navbar = () => {
             ) : user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="gap-2">
-                    <User className="w-4 h-4" />
-                    <span className="max-w-[150px] truncate">
-                      {user.email}
+                  <Button variant="ghost" size="sm" className="gap-2 border hover:bg-secondary transition-all">
+                    <User className="w-4 h-4 text-primary" />
+                    <span className="max-w-[150px] truncate font-medium">
+                      {user.email?.split('@')[0]}
                     </span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuContent align="end" className="w-56 mt-1">
+                  <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Account: {role?.replace('_', ' ')}
+                  </div>
+                  <DropdownMenuSeparator />
+                  
                   <DropdownMenuItem asChild>
-                    <Link to="/dashboard" className="cursor-pointer">
-                      Dashboard
+                    <Link to="/admin" className="cursor-pointer">
+                      <LayoutDashboard className="w-4 h-4 mr-2" />
+                      Main Dashboard
                     </Link>
                   </DropdownMenuItem>
+
+                  {/* ADMIN PANEL BUTTON */}
                   {role === "admin" && (
                     <DropdownMenuItem asChild>
-                      <Link to="/admin" className="cursor-pointer">
+                      <Link to="/admin" className="cursor-pointer font-medium text-blue-600 focus:text-blue-700">
                         <Shield className="w-4 h-4 mr-2" />
                         Admin Panel
                       </Link>
                     </DropdownMenuItem>
                   )}
+
+                  {/* SUPER ADMIN PANEL BUTTON */}
+                  {role === "super_admin" && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/admin" className="cursor-pointer font-bold text-[#E11D48] focus:text-[#E11D48] focus:bg-red-50">
+                        <ShieldCheck className="w-4 h-4 mr-2" />
+                        Super Admin Panel
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={handleSignOut}
-                    className="text-destructive cursor-pointer"
+                    className="text-destructive cursor-pointer focus:bg-destructive/10"
                   >
                     <LogOut className="w-4 h-4 mr-2" />
                     Sign Out
@@ -104,7 +133,7 @@ const Navbar = () => {
                 <Button variant="ghost" size="sm" asChild>
                   <Link to="/auth">Sign In</Link>
                 </Button>
-                <Button size="sm" asChild>
+                <Button size="sm" asChild className="bg-[#E11D48] hover:bg-[#BE123C]">
                   <Link to="/auth">Get Started</Link>
                 </Button>
               </>
@@ -113,7 +142,7 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-secondary"
+            className="md:hidden p-2 rounded-lg hover:bg-secondary transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
@@ -126,7 +155,7 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border animate-fade-in">
+          <div className="md:hidden py-4 border-t border-border animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="flex flex-col gap-2">
               {navLinks.map((link) => (
                 <Link
@@ -142,15 +171,33 @@ const Navbar = () => {
                   {link.label}
                 </Link>
               ))}
+
               <div className="flex flex-col gap-2 mt-4 px-4">
                 {user ? (
                   <>
-                    <p className="text-sm text-muted-foreground truncate mb-2">
-                      Signed in as {user.email}
-                    </p>
+                    <div className="px-4 py-2 bg-secondary/50 rounded-lg mb-2">
+                      <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">
+                        Logged in as
+                      </p>
+                      <p className="text-sm font-semibold truncate text-foreground">
+                        {user.email}
+                      </p>
+                    </div>
+                    
+                    {/* MOBILE ROLE BUTTONS */}
+                    {role === "admin" && (
+                      <Button variant="outline" className="w-full justify-start text-blue-600 border-blue-100 bg-blue-50/30" asChild>
+                        <Link to="/admin" onClick={() => setMobileMenuOpen(false)}>
+                          <Shield className="w-4 h-4 mr-2" /> Admin Control Panel
+                        </Link>
+                      </Button>
+                    )}
+                    
+                    
+
                     <Button
-                      variant="outline"
-                      className="w-full"
+                      variant="ghost"
+                      className="w-full justify-start text-destructive hover:bg-destructive/10"
                       onClick={() => {
                         handleSignOut();
                         setMobileMenuOpen(false);
@@ -167,7 +214,7 @@ const Navbar = () => {
                         Sign In
                       </Link>
                     </Button>
-                    <Button className="w-full" asChild>
+                    <Button className="w-full bg-[#E11D48] hover:bg-[#BE123C]" asChild>
                       <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
                         Get Started
                       </Link>
